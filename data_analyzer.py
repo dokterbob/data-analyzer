@@ -1,13 +1,23 @@
+#!/usr/bin/env python
+
+import argparse
 import pandas as pd
 import sys
 
 
 def analyze_file(file_path):
+    """
+    Analyze the given file and generate an overview DataFrame.
+
+    Args:
+        file_path (str): Path to the input file.
+
+    Returns:
+        pd.DataFrame: Overview DataFrame containing details about the fields in the input file.
+    """
     # Determine the file type based on the file extension
     if file_path.endswith(".csv"):
-        data = pd.read_csv(
-            file_path, delimiter=";"
-        )  # Assuming semicolon-delimited CSV files
+        data = pd.read_csv(file_path, delimiter=";")
     elif file_path.endswith((".xlsx", ".xls")):
         data = pd.read_excel(file_path)
     else:
@@ -40,22 +50,31 @@ def analyze_file(file_path):
     return overview_df
 
 
-if __name__ == "__main__":
-    # Check if the filename is passed as a command-line argument
-    if len(sys.argv) < 2:
-        print("Usage: python script_name.py filename [output_csv_path]")
-        sys.exit(1)
+def main():
+    """
+    Main function to parse command-line arguments and execute the script.
+    """
+    parser = argparse.ArgumentParser(
+        description="Analyze CSV or Excel files and generate an overview."
+    )
+    parser.add_argument("input_file", help="Path to the input CSV or Excel file.")
+    parser.add_argument("output_file", nargs="?", help="Path to the output CSV file.")
+    args = parser.parse_args()
 
-    file_path = sys.argv[1]  # Get filename from command-line argument
+    input_file = args.input_file
+    output_file = args.output
 
-    # Run the function and print the results
+    # Run the function and handle output
     try:
-        field_overview = analyze_file(file_path)
-        if len(sys.argv) > 2:
-            output_csv_path = sys.argv[2]
-            field_overview.to_csv(output_csv_path, index=False)
-            print(f"Data overview saved to {output_csv_path}")
+        field_overview = analyze_file(input_file)
+        if output_file:
+            field_overview.to_csv(output_file, index=False)
+            print(f"Data overview saved to {output_file}")
         else:
             print(field_overview)
     except Exception as e:
         print(f"Error processing file: {e}")
+
+
+if __name__ == "__main__":
+    main()
