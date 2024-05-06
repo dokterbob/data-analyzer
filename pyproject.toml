@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "data_analyzer"
+version = "0.1.0"
+description = "You get a blob of data, anything tabular, what is it!??? Analyze your data and its fields with this little Python script."
+authors = ["Mathijs de Bruin <mathijs@mathijsfietst.nl>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.2.2"
+openpyxl = "^3.1.2"
+xlrd = "^2.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
